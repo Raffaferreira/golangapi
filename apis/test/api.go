@@ -1,4 +1,4 @@
-package test
+package api
 
 import (
 	"log"
@@ -28,25 +28,17 @@ func MainTestin() {
 		panic(err)
 	}
 
-	r := mux.NewRouter().StrictSlash(true)
+	product := mux.NewRouter().StrictSlash(true)
 
-	s := r.PathPrefix("/products").Subrouter()
+	s := product.PathPrefix("/products").Subrouter()
 	s.HandleFunc("/allgroceries", service.AllGroceries)
 	s.HandleFunc("/{name}", service.SingleGrocery).Methods("GET")
 	s.HandleFunc("/", service.GroceriesToBuy).Methods("POST")
 	s.HandleFunc("/{name}", service.UpdateGrocery).Methods("PUT")
 	s.HandleFunc("/{name}", service.DeleteGrocery).Methods("DELETE")
 
-	// r.HandleFunc("/allgroceries", AllGroceries)
-	// r.HandleFunc("/groceries/{name}", SingleGrocery)
-	// r.HandleFunc("/groceries", GroceriesToBuy).Methods("POST")
-	// r.HandleFunc("/groceries/{name}", UpdateGrocery).Methods("PUT")
-	// r.HandleFunc("/groceries/{name}", DeleteGrocery).Methods("DELETE")
-
-	// log.Fatal(http.ListenAndServe(":10000", r))
-
 	server := &http.Server{
-		Handler: r,
+		Handler: product,
 		Addr:    "127.0.0.1:8000",
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
@@ -55,3 +47,11 @@ func MainTestin() {
 
 	log.Fatal(server.ListenAndServe())
 }
+
+// r.HandleFunc("/allgroceries", AllGroceries)
+// r.HandleFunc("/groceries/{name}", SingleGrocery)
+// r.HandleFunc("/groceries", GroceriesToBuy).Methods("POST")
+// r.HandleFunc("/groceries/{name}", UpdateGrocery).Methods("PUT")
+// r.HandleFunc("/groceries/{name}", DeleteGrocery).Methods("DELETE")
+
+// log.Fatal(http.ListenAndServe(":10000", r))

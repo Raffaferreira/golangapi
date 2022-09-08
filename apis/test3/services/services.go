@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	obj "main/apis/test3/structs"
 	"math/rand"
 	"net/http"
@@ -71,4 +72,13 @@ func UpdateMovie(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+}
+
+func HandleHello(response http.ResponseWriter, request *http.Request) {
+	params := mux.Vars(request)
+
+	response.Header().Add("Content-Type", "application/json")
+	json.NewEncoder(response).Encode(map[string]string{
+		"message": fmt.Sprintf("Hello %s", params["name"]),
+	})
 }

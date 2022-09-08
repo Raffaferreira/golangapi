@@ -82,3 +82,13 @@ func HandleHello(response http.ResponseWriter, request *http.Request) {
 		"message": fmt.Sprintf("Hello %s", params["name"]),
 	})
 }
+
+func HandlePerson(w http.ResponseWriter, rq *http.Request) {
+	var p obj.Person
+	err := json.NewDecoder(rq.Body).Decode(&p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Fprintf(w, "Nome: %s - Idade: %d\n", p.Name, p.Age)
+}

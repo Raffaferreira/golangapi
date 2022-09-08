@@ -13,12 +13,15 @@ import (
 var movies []obj.Movie
 
 func main() {
+
 	r := mux.NewRouter()
 
 	movies = append(movies, obj.Movie{Id: "1", Isbn: "434779", Title: "Movie One", Director: &obj.Director{FirstName: "John", LastName: "Mayer"}})
 	movies = append(movies, obj.Movie{Id: "2", Isbn: "434780", Title: "Movie Two", Director: &obj.Director{FirstName: "Rafael", LastName: "Ferreira"}})
 
 	r.HandleFunc("/{name}", services.HandleHello).Methods("GET")
+	r.HandleFunc("/person", services.HandlePerson).Methods("POST")
+
 	r.HandleFunc("/movies", services.GetMovies).Methods("GET")
 	r.HandleFunc("/movie/{id}", services.GetMovieById).Methods("GET")
 	r.HandleFunc("/create", services.CreateMovie).Methods("POST")
